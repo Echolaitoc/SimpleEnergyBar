@@ -358,6 +358,8 @@ function SEB:UpdateFrameSize()
         frame:UnregisterEvent(EVENT_COMBAT_END)
     end
     if db.showBorder then
+        frame:SetBackdrop({ bgFile = "Interface/Tooltips/UI-Tooltip-Background" })
+        frame.statusbar:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
         if not frame.border then
             frame.border = CreateFrame("Frame", nil, frame.statusbar)
             frame.border:SetPoint('TOPLEFT', -4, 4)
@@ -373,6 +375,8 @@ function SEB:UpdateFrameSize()
         if frame.border then
             frame.border:Hide()
         end
+        frame:SetBackdrop(nil)
+        frame.statusbar:SetStatusBarTexture(nil)
     end
 end
 
