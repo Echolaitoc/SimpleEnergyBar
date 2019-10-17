@@ -87,6 +87,11 @@ local function OnSlash(key, value, ...)
             SimpleEnergyBarDB.showBorder = enable
             SEB:UpdateFrameSize()
             SEB:Print("'showBorder' set: "..( enable and "true" or "false" ))
+        elseif key == "playsound" then
+            local enable = GetFormatedSlash(value, SimpleEnergyBarDB.playSound)
+            SimpleEnergyBarDB.playSound = enable
+            SEB:UpdateFrameSize()
+            SEB:Print("'playSound' set: "..( enable and "true" or "false" ))
         elseif key == "textsize" and tonumber(value) then
             local value = tonumber(value)
            --if value >= 3 then
@@ -112,6 +117,7 @@ local function OnSlash(key, value, ...)
         SEB:Print(" - showOnlyCurrentEnergy 0/1")
         SEB:Print(" - textSize xxx")
         SEB:Print(" - showBorder 0/1")
+        SEB:Print(" - playSound 0/1")
         if PlayerClass == "DRUID" then
             SEB:Print(" - onlyInCatForm 0/1")
         end
@@ -167,6 +173,12 @@ local function OnUpdate()
 
         local position = barFrame.sparkRange - ( ( barFrame.sparkRange / BASE_REG_SEC ) * ( ( BASE_REG_SEC * 0.5 ) * diff ) )
         barFrame.statusbar.spark:SetPoint("CENTER", barFrame.statusbar, "LEFT", position, 0)
+
+            local curEnergy = UnitPower(PLAYER_UNIT, ENUM_P_TYPE_ENERGY)
+            local maxEnergy = UnitPowerMax(PLAYER_UNIT, ENUM_P_TYPE_ENERGY)
+        if SimpleEnergyBarDB.playSound and diff == BASE_REG_SEC and curEnergy ~= maxEnergy then
+            PlaySound(1182)
+        end
     end
 end
 local UpdateFrame = CreateFrame("Frame", UIParent)
