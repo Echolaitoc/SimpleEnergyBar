@@ -185,7 +185,7 @@ local function OnUpdate()
             local curEnergy = UnitPower(PLAYER_UNIT, ENUM_P_TYPE_ENERGY)
             local maxEnergy = UnitPowerMax(PLAYER_UNIT, ENUM_P_TYPE_ENERGY)
         if SimpleEnergyBarDB.playSound and diff == BASE_REG_SEC and curEnergy ~= maxEnergy then
-            PlaySound(1182)
+            PlaySound(1208)
         end
     end
 end
