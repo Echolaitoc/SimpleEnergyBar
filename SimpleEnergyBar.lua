@@ -99,6 +99,11 @@ local function OnSlash(key, value, ...)
                 SEB:UpdateFrameSize()
                 SEB:Print("'textSize' set: "..value)
             --end
+        elseif key == "textvisible" then
+            local enable = GetFormatedSlash(value, SimpleEnergyBarDB.textVisible)
+            SimpleEnergyBarDB.textVisible = not SimpleEnergyBarDB.textVisible
+            SEB:UpdateFrameSize()
+            SEB:Print("'textVisible' set: "..( enable and "true" or "false" ))
         elseif PlayerClass == "DRUID" and key == "onlyincatform" then
             local enable = GetFormatedSlash(value, SimpleEnergyBarDB.onlyInCatForm)
             SimpleEnergyBarDB.onlyInCatForm = enable
@@ -116,6 +121,7 @@ local function OnSlash(key, value, ...)
         SEB:Print(" - showInStealth 0/1")
         SEB:Print(" - showOnlyCurrentEnergy 0/1")
         SEB:Print(" - textSize xxx")
+        SEB:Print(" - textVisible 0/1")
         SEB:Print(" - showBorder 0/1")
         SEB:Print(" - playSound 0/1")
         if PlayerClass == "DRUID" then
@@ -164,7 +170,9 @@ local function OnUpdate()
     if SEB.barFrame:IsShown() then
         local barFrame = SEB.barFrame
         if barFrame.updateText then
-            if SimpleEnergyBarDB.showOnlyCurrentEnergy then
+            if not SimpleEnergyBarDB.textVisible then
+                barFrame.statusbar.text:SetText("")
+            elseif SimpleEnergyBarDB.showOnlyCurrentEnergy then
                 barFrame.statusbar.text:SetText(format(ENERGY_FORMAT_STRING_TIMER_NO_MAX, barFrame.power, diff))
             else
                 barFrame.statusbar.text:SetText(format(ENERGY_FORMAT_STRING_TIMER, barFrame.power, barFrame.statusbar.maxValue, diff))
@@ -247,7 +255,9 @@ local function FramOnEvent(self, event, arg1, arg2, ...)
         if power >= powerMax then
             SEB.lastEventTime = GetTime()
             self.updateText = false
-            if SimpleEnergyBarDB.showOnlyCurrentEnergy then
+            if not SimpleEnergyBarDB.textVisible then
+                statusbar.text:SetText("")
+            elseif SimpleEnergyBarDB.showOnlyCurrentEnergy then
                 statusbar.text:SetText(power)
             else
                 statusbar.text:SetText(format(ENERGY_FORMAT_STRING, power, powerMax))
@@ -310,7 +320,9 @@ function SEB:UpdateFrameSize()
 
     if curEnergy >= frame.statusbar.maxValue then
         self.updateText = false
-        if SimpleEnergyBarDB.showOnlyCurrentEnergy then
+        if not SimpleEnergyBarDB.textVisible then
+            frame.statusbar.text:SetText("")
+        elseif SimpleEnergyBarDB.showOnlyCurrentEnergy then
             frame.statusbar.text:SetText(curEnergy)
         else
             frame.statusbar.text:SetText(format(ENERGY_FORMAT_STRING, curEnergy, frame.statusbar.maxValue))
