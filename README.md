@@ -26,6 +26,10 @@ Settings can be accesd with the slash commands `/simpleenerybar` and `/seb`
 
 * `/seb textSize x` - Set size of text
 
+* `/seb textVisible 0/1` - Completely show or hide text
+
+* `/seb playSound 0/1` - Play sound on tick when energy is not full
+
 Druids only
 
 * `/seb onlyInCatForm 0/1` - Only show energy bar in cat
